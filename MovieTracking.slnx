@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MovieTracking.Api/MovieTracking.Api.csproj" />
+    <Project Path="src/MovieTracking.Application/MovieTracking.Application.csproj" />
+    <Project Path="src/MovieTracking.Domain/MovieTracking.Domain.csproj" />
+    <Project Path="src/MovieTracking.Infrastructure/MovieTracking.Infrastructure.csproj" />
+  </Folder>
+</Solution>
