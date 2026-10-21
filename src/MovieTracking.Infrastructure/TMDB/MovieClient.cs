@@ -35,6 +35,12 @@ public class MovieClient(string accessToken) : IMovieClient
         return response.Results;
     }
 
+    public async Task<MovieDetailsDto> GetMovieDetails(int id, CancellationToken cancellationToken)
+    {
+        var response = await GetAsync<MovieDetailsDto>($"movie/{id}", cancellationToken);
+        return response;
+    }
+
     private async Task<T> GetAsync<T>(string path, CancellationToken cancellationToken)
     {
         await _lock.WaitAsync(cancellationToken);

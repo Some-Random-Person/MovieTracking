@@ -16,4 +16,11 @@ public class MovieController(IMovieClient movieClient) : ControllerBase
         var results = await _movieClient.GetMovieSearch(query);
         return Ok(results);
     }
+
+    [HttpGet("{movieId:int}")]
+    public async Task<ActionResult<MovieDto>> GetMovie (int movieId)
+    {
+        var result = await _movieClient.GetMovieDetails(movieId);
+        return Ok(result);
+    }
 }

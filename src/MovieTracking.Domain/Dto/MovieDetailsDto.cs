@@ -1,0 +1,3 @@
+namespace MovieTracking.Domain.Dto;
+
+public sealed record MovieDetailsDto(bool Adult, string? Backdrop_path, CollectionDto? Belongs_to_collection, long Budget, List<GenreDto> Genres, string? Homepage, int Id, string? Imdb_id, List<string> Origin_country, string Original_language, string Overview, decimal Popularity, string? Poster_path, List<CompanyDto> Production_companies, List<CountryDto> Production_countries, string? Release_date, long Revenue, int Runtime, bool Softcore, List<LanguageDto> Spoken_languages, string Status, string Tagline, string Title, bool Video, decimal Vote_average, int Vote_count);
