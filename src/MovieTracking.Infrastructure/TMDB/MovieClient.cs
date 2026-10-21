@@ -2,10 +2,13 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using MovieTracking.Domain.Dto;
+using MovieTracking.Domain.Interfaces;
+
 
 namespace MovieTracking.Infrastructure.TMDB;
 
-public class MovieClient
+public class MovieClient(string accessToken) : IMovieClient
 {
     private static readonly TimeSpan MinimumInterval = TimeSpan.FromMilliseconds(700);
     private static readonly TimeSpan DefaultRetryDelay = TimeSpan.FromMinutes(1);
@@ -21,10 +24,16 @@ public class MovieClient
     private readonly HttpClient _httpClient = new()
     {
         BaseAddress = new Uri("https://api.themoviedb.org/3/"),
-        DefaultRequestHeaders = { { "User-Agent", "MovieTracking/0.1 (+https://github.com/Some-Random-Person/MovieTracking)"}}
+        DefaultRequestHeaders = { { "User-Agent", "MovieTracking/0.1 (+https://github.com/Some-Random-Person/MovieTracking)" }, { "Authorization", $"Bearer {accessToken}"}}
     };
     private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly Stopwatch _sinceLastCall = new();
+
+    public async Task<List<MovieDto>> GetMovieSearch(string query, CancellationToken cancellationToken)
+    {
+        var response = await GetAsync<SearchDto>($"search/movie?query={Uri.EscapeDataString(query)}&include_adult=false&language=en-US&page=1", cancellationToken);
+        return response.Results;
+    }
 
     private async Task<T> GetAsync<T>(string path, CancellationToken cancellationToken)
     {
