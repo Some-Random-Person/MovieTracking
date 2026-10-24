@@ -24,7 +24,7 @@ public class MovieClient(string accessToken) : IMovieClient
     private readonly HttpClient _httpClient = new()
     {
         BaseAddress = new Uri("https://api.themoviedb.org/3/"),
-        DefaultRequestHeaders = { { "User-Agent", "MovieTracking/0.1 (+https://github.com/Some-Random-Person/MovieTracking)" }, { "Authorization", $"Bearer {accessToken}"}}
+        DefaultRequestHeaders = { { "User-Agent", "MovieTracking/0.1 (+https://github.com/Some-Random-Person/MovieTracking)" }, { "Authorization", $"Bearer {accessToken}" } }
     };
     private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly Stopwatch _sinceLastCall = new();

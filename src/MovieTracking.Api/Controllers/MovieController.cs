@@ -18,7 +18,7 @@ public class MovieController(IMovieClient movieClient) : ControllerBase
     }
 
     [HttpGet("{movieId:int}")]
-    public async Task<ActionResult<MovieDto>> GetMovie (int movieId)
+    public async Task<ActionResult<MovieDto>> GetMovie(int movieId)
     {
         var result = await _movieClient.GetMovieDetails(movieId);
         return Ok(result);

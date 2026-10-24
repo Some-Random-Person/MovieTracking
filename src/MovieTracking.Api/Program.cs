@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using MovieTracking.Domain.Interfaces;
+using MovieTracking.Infrastructure;
 using MovieTracking.Infrastructure.TMDB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 var tmdbToken = builder.Configuration["Tmdb:AccessToken"] ?? throw new InvalidOperationException("Tmdb:AccessToken is not configured");
 
 // Add services to the container.
+
+var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is not set.");
+
+builder.Services.AddDbContext<MovieTrackingDbContext>(options =>
+{
+    options.UseMySQL(defaultConnection);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
