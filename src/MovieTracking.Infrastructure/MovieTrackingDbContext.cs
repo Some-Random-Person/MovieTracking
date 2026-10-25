@@ -19,5 +19,20 @@ public class MovieTrackingDbContext : DbContext
             .HasMany(e => e.Lists)
             .WithMany(e => e.Movies)
             .UsingEntity<ListMovie>();
+
+        modelBuilder.Entity<ListHierarchy>(e =>
+        {
+            e.HasKey(e => new {e.ChildListId, e.ParentListId});
+
+            e.HasOne(e => e.ParentList)
+                .WithMany(e => e.ChildLists)
+                .HasForeignKey(e => e.ParentListId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(e => e.ChildList)
+                .WithMany(e => e.ParentLists)
+                .HasForeignKey(e => e.ChildListId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }

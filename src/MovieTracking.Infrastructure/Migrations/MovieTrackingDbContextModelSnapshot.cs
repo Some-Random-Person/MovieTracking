@@ -34,6 +34,24 @@ namespace MovieTracking.Infrastructure.Migrations
                     b.ToTable("Lists");
                 });
 
+            modelBuilder.Entity("MovieTracking.Domain.Entities.ListHierarchy", b =>
+                {
+                    b.Property<Guid>("ChildListId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ParentListId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int?>("SortingNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("ChildListId", "ParentListId");
+
+                    b.HasIndex("ParentListId");
+
+                    b.ToTable("ListHierarchy");
+                });
+
             modelBuilder.Entity("MovieTracking.Domain.Entities.ListMovie", b =>
                 {
                     b.Property<Guid>("ListId")
@@ -77,6 +95,25 @@ namespace MovieTracking.Infrastructure.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("MovieTracking.Domain.Entities.ListHierarchy", b =>
+                {
+                    b.HasOne("MovieTracking.Domain.Entities.List", "ChildList")
+                        .WithMany("ParentLists")
+                        .HasForeignKey("ChildListId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieTracking.Domain.Entities.List", "ParentList")
+                        .WithMany("ChildLists")
+                        .HasForeignKey("ParentListId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChildList");
+
+                    b.Navigation("ParentList");
+                });
+
             modelBuilder.Entity("MovieTracking.Domain.Entities.ListMovie", b =>
                 {
                     b.HasOne("MovieTracking.Domain.Entities.List", "List")
@@ -98,7 +135,11 @@ namespace MovieTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieTracking.Domain.Entities.List", b =>
                 {
+                    b.Navigation("ChildLists");
+
                     b.Navigation("ListMovies");
+
+                    b.Navigation("ParentLists");
                 });
 
             modelBuilder.Entity("MovieTracking.Domain.Entities.Movie", b =>
