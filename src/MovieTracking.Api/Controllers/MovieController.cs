@@ -11,14 +11,14 @@ public class MovieController(IMovieClient movieClient) : ControllerBase
     private readonly IMovieClient _movieClient = movieClient;
 
     [HttpGet]
-    public async Task<ActionResult<List<MovieDto>>> GetMovies(string query)
+    public async Task<ActionResult<List<TMDBMovieDto>>> GetMovies(string query)
     {
         var results = await _movieClient.GetMovieSearch(query);
         return Ok(results);
     }
 
     [HttpGet("{movieId:int}")]
-    public async Task<ActionResult<MovieDto>> GetMovie(int movieId)
+    public async Task<ActionResult<TMDBMovieDto>> GetMovie(int movieId)
     {
         var result = await _movieClient.GetMovieDetails(movieId);
         return Ok(result);

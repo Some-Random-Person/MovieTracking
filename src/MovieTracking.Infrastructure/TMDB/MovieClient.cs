@@ -29,15 +29,15 @@ public class MovieClient(string accessToken) : IMovieClient
     private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly Stopwatch _sinceLastCall = new();
 
-    public async Task<List<MovieDto>> GetMovieSearch(string query, CancellationToken cancellationToken)
+    public async Task<List<TMDBMovieDto>> GetMovieSearch(string query, CancellationToken cancellationToken)
     {
-        var response = await GetAsync<SearchDto>($"search/movie?query={Uri.EscapeDataString(query)}&include_adult=false&language=en-US&page=1", cancellationToken);
+        var response = await GetAsync<TMDBSearchDto>($"search/movie?query={Uri.EscapeDataString(query)}&include_adult=false&language=en-US&page=1", cancellationToken);
         return response.Results;
     }
 
-    public async Task<MovieDetailsDto> GetMovieDetails(int id, CancellationToken cancellationToken)
+    public async Task<TMDBMovieDetailsDto> GetMovieDetails(int id, CancellationToken cancellationToken)
     {
-        var response = await GetAsync<MovieDetailsDto>($"movie/{id}", cancellationToken);
+        var response = await GetAsync<TMDBMovieDetailsDto>($"movie/{id}", cancellationToken);
         return response;
     }
 
